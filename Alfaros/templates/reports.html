@@ -1,0 +1,139 @@
+<!DOCTYPE html>{% load static %}{% load tags %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reports.css' %}">
+    <script src="{% static 'js/reports.js' %}"></script>
+</head>
+
+<body>
+    <ul>
+        <li id="alfaros"><a href="#"><img src="{% static 'css/logo.png' %}" width="60" height="15"></a></li>
+        <li><a href="{% url 'alfaros:dashboard' %}"><span id="Dashboard">Dashboard</span></a></li>
+        <li><a href="{% url 'alfaros:analytics' %}"><span id="Analytics">Analytics</span></a></li>
+        <li><a class="active" href="{% url 'alfaros:reports' %}"><span id="Reports">Reports</span></a></li>
+        <li><a href="{% url 'alfaros:workflow' %}"><span id="Workflow">Workflow</span></a></li>
+        <li id="logout"><a href="{% url 'alfaros:logout' %}">Log out</a></li>
+    </ul>
+
+    <div class="head">
+        <h1>Reports</h1>
+        <button>Reports</button>
+    </div>
+    <h3>Searches can be saved as reports from the analytics page</h3>
+    <br>
+    <hr>
+    {% csrf_token %}
+    <div id="zombrani">
+        <div class="lecunt">
+            <div class="show">Show:&nbsp;<select>
+                    <option selected>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                    <option>100</option>
+                </select>&nbsp;per page</div>
+            <div class="search"><input id="search0" type="text" required autocomplete="off" /><label>Search Here...</label></div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th deval="report_name" style="width:18%">Report Name<div><span class="order_up"></span><span class="active_order_down"></span></div>
+                    </th>
+                    <th deval="schedule">Schedule<div><span class="order_up"></span><span class="order_down"></span></div>
+                    </th>
+                    <th deval="creation_date">Creation Date<div><span class="order_up"></span><span class="order_down"></span></div>
+                    </th>
+                    <th deval="next_run_time">Next Run Time<div><span class="order_up"></span><span class="order_down"></span></div>
+                    </th>
+                    <th deval="owner">Owner<div><span class="order_up"></span><span class="order_down"></span></div>
+                    </th>
+                    <th deval="view">View<div><span class="order_up"></span><span class="order_down"></span></div>
+                    </th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody id="inner0"></tbody>
+        </table>
+        <div class="footer">
+            <div class="showing" id="showing0"></div>
+            <div id="pager0" class="pager"></div>
+        </div>
+        <div style="position:relative;display:flex;"><button class="delete">Delete</button><button class="tmclose">Close</button></div>
+        <br><br><br><br>
+        <hr>
+    </div>
+    <div class="lecunt">
+        <div>
+            <div class="show_report">Showing&nbsp;:&nbsp;<select>
+                    <option>100</option>
+                    <option>200</option>
+                    <option>500</option>
+                    <option>1000</option>
+                    <option>2000</option>
+                    <option>All</option>
+                </select>&nbsp; latest reports&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div class="show_filter">Filter by&nbsp;:&nbsp;<select>
+                    <option>Report Name</option>
+                    <option>Type</option>
+                    <option>Schedule</option>
+                    <option>Creation Date</option>
+                    <option>Next Run Time</option>
+                    <option>Owner</option>
+                    <option>View</option>
+                </select></div>
+            <input id="search1" type="text" autocomplete="off" placeholder="filter..." />
+        </div>
+        <div class="show">Show:&nbsp;<select>
+                <option selected>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+            </select>&nbsp;per page</div>
+    </div>
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th deval="report_name">Report Name<div><span class="order_up1"></span><span class="active_order_down1"></span></div>
+                </th>
+                <th deval="type">Type<div><span class="order_up1"></span><span class="order_down1"></span></div>
+                </th>
+                <th deval="schedule">Schedule<div><span class="order_up1"></span><span class="order_down1"></span></div>
+                </th>
+                <th deval="creation_date">Creation Date<div><span class="order_up1"></span><span class="order_down1"></span></div>
+                </th>
+                <th deval="next_run_time">Next Run Time<div><span class="order_up1"></span><span class="order_down1"></span></div>
+                </th>
+                <th deval="owner">Owner<div><span class="order_up1"></span><span class="order_down1"></span></div>
+                </th>
+                <th deval="view">View<div><span class="order_up1"></span><span class="order_down1"></span></div>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="inner1">
+            {% for i in report %}
+            <tr>
+                <td>{{i.report_name}}</td>
+                <td>{{i.type}}</td>
+                <td>{{i.schedule|far|capfirst}}</td>
+                <td>{{i.creation_date}}</td>
+                <td>{{i.next_run_time}}</td>
+                <td>{{i.owner}}</td>
+                <td>{% for j in i.view|args %}
+                    <a href="/rtemp?name={{i.report_name}}&id={{i.pk}}&type={{j}}">{{j}}</a>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="footer">
+        <div class="showing" id="showing1"></div>
+        <div id="pager1" class="pager"></div>
+    </div>
+</body>
+
+</html>

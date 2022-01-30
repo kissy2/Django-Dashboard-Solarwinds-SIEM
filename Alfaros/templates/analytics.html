@@ -1,0 +1,73 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/analytics.css' %}">
+    <script src="{% static 'Chart.js/dist/Chart.min.js' %}"></script>
+    <script src="{% static 'jquery/jquery.js' %}"></script>
+    <script src="{% static 'js/analytics.js' %}"></script>
+</head>
+
+<body>
+    <ul>
+        <li id="alfaros"><a href="#"><img src="{% static 'css/logo.png' %}" width="60" height="15"></a></li>
+        <li><a href="{% url 'alfaros:dashboard' %}"><span id="Dashboard">Dashboard</span></a></li>
+        <li><a class="active" href="{% url 'alfaros:analytics' %}"><span id="Analytics">Analytics</span></a></li>
+        <li><a href="{% url 'alfaros:reports' %}"><span id="Reports">Reports</span></a></li>
+        <li><a href="{% url 'alfaros:workflow' %}"><span id="Workflow">Workflow</span></a></li>
+        <li id="logout"><a href="{% url 'alfaros:logout' %}">Log out</a></li>
+    </ul>{% csrf_token %}
+    <div class="modal">
+        <div class="modal_child">
+            <article>
+                <div class="modal_head">
+                    <h2>Save As Report</h2><button class="close"><span>CLOSE</span></button>
+                </div>
+                <div class="modal_content"><label><span>Report Name : </span><input type="text" autocomplete="off" class="title" /></label><label><span>Schedule : </span><select class="greport_select">
+                            <option selected>Once</option>
+                            <option>Daily</option>
+                            <option>Weekly</option>
+                            <option>Monthly</option>
+                            <option>Custom Date</option>
+                        </select></label><label><span>Format : </span><select class="greport_select">
+                            <option selected value="HTML">HTML Only</option>
+                            <option value="PDF">PDF Only</option>
+                            <option value="HTML&PDF">HTML&PDF</option>
+                        </select></label></div>
+                <div class="modal_footer"><button class="sexy_btn">Cancel</button><button class="sexy_btn">Save</button></div>
+            </article>
+        </div>
+    </div>
+    <div class="head">
+        <h1>New Search</h1><span class="pop_modal_box">Save as report</span>
+    </div>
+    <div class="lecunt"><input type="text" autocomplete="off" class="custom_search" placeholder="Custom Search" />
+        <div><button class="range pop_modal_box">Last 24 hours</button></div><button id="scoop"></button>
+    </div>
+    <div class="chart">
+        <canvas id="statistic" style="width:100%;height:100%"></canvas>
+        <script>
+            js_data = JSON.parse(sessionStorage.getItem("in"));
+            display_chart(js_data, 24, "statistic", "Events Over Time", "bar");
+        </script>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Date<div><span class="order_up"></span><span class="order_down"></span></div>
+                </th>
+                <th>Event Info<div><span class="order_up"></span><span class="order_down"></span></div>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="inner"></tbody>
+    </table>
+    <div class="aligner">
+        <div class="showing" id="showing"></div>
+        <div id="pager" class="pager"></div>
+    </div>
+</body>
+
+</html>

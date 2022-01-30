@@ -1,0 +1,142 @@
+<!DOCTYPE html>{% load static %}{% load tags %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Workflow</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/workflow.css' %}">
+    <script src="{% static 'js/workflow.js' %}"></script>
+
+</head>
+
+<body>
+    <ul>
+        <li id="alfaros"><a href="#"><img src="{% static 'css/logo.png' %}" width="60" height="15"></a></li>
+        <li><a href="{% url 'alfaros:dashboard' %}"><span id="Dashboard">Dashboard</span></a></li>
+        <li><a href="{% url 'alfaros:analytics' %}"><span id="Analytics">Analytics</span></a></li>
+        <li><a href="{% url 'alfaros:reports' %}"><span id="Reports">Reports</span></a></li>
+        <li><a class="active" href="{% url 'alfaros:workflow' %}"><span id="Workflow">Workflow</span></a></li>
+        <li id="logout"><a href="{% url 'alfaros:logout' %}">Log out</a></li>
+    </ul>
+
+
+    <h1> Manage Severity for crucial untreated alerts</h1><button id="tm">Ticket Monitoring</button>
+    {% csrf_token %}
+
+    <div id="zombrani">
+        <table class="z">
+            <thead class="move">
+                <tr>
+                    <th>#</th>
+                    <th>Severity</th>
+                    <th>Time In Minutes</th>
+                    <th>Notification Time</th>
+                    <th>Auto Notify</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody class="move" id="inner0">
+                {% for i in admin %}
+                <tr>
+                    <td><input type="checkbox" class="sharp" value="{{i.severity}}"></td>
+                    <td>{{i.severity}}</td>
+                    <td><input type="number" autocomplete="off" placeholder="Time In Minutes" value="{{ i.time|fstrip }}"></td>
+                    <td><input type="number" autocomplete="off" placeholder="Time In Minutes" value="{{i.notify_time|fstrip}}"></td>
+                    <td>
+                        {% if i.auto_notify == "ACTIVE" %}
+                        <input type="checkbox" checked class="radio1">
+                        {% else %}
+                        <input type="checkbox" class="radio1">
+                    </td>
+                    {% endif %}
+                    </td>
+                    <td><button class="tmupdate"></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="position:relative;display:flex;margin-top:-5%"><button class="delete">Delete</button><button class="add">Add New Rule</button><button class="tmclose">Close</button></div>
+        <br><br><br><br>
+        <hr>
+    </div>
+
+    <div class="lecunt">
+        <div class="show">Show:&nbsp;<select>
+                <option selected>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+            </select>&nbsp;per page</div>
+        <div class="search"><input id="search" type="text" required autocomplete="off" /><label>Search Here...</label></div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th deval="rule_name">Rule Name<div><span class="order_up"></span><span class="active_order_down"></span></div>
+                </th>
+                <th deval="time">Time In Hours<div><span class="order_up"></span><span class="order_down"></span></div>
+                </th>
+                <th deval="severity">Alter Severity<div><span class="order_up"></span><span class="order_down"></span></div>
+                </th>
+                <th deval="autoincr">Auto Increment<div><span class="order_up"></span><span class="order_down"></span></div>
+                </th>
+                <th deval="status">Status<div><span class="order_up"></span><span class="order_down"></span></div>
+                </th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        {% if all_rules != 0 %}
+        <tbody id="inner1">
+            {% for i in all_rules %}
+            <tr>
+                <td> {{ i.rule_name }} </td>
+                <td> <input type="number" autocomplete="off" placeholder="Time In Hours" value="{{ i.time|fstrip}}"></td>
+
+                <td> <input type="number" min=0 max=10 autocomplete="off" placeholder="Severity to add" value="{{ i.severity|fstrip }}"> </td>
+                <td>
+                    {% if i.autoincr == "TRUE" %}
+                    <input type="checkbox" class="radio" checked>
+
+                    {% else %}
+                    <input type="checkbox" class="radio">
+                    {% endif %}
+                </td>
+                {% if i.status == "Active" %}
+                <td> <input type="checkbox" checked class="status"></td>
+                {% else %}
+                <td> <input type="checkbox" class="status"></td>
+                {% endif %}
+                <td><button class="update"></button></td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+        {% endif %}
+    </table>
+    <br>
+    <div class="aligner">
+        <div class="showing" id="showing"></div>
+        <div id="pager" class="pager"></div>
+    </div>
+    <div class="nmodal">
+        <div class="nmodal_child">
+            <div class="modal_head">
+                <h2>Add Ticket Monitoring Rule</h2><button class="close"><span>CLOSE</span></button>
+            </div>
+            <div class="modal_content">
+                <label>Severity : <input type="number" autocomplete="off" min=0 max=10 placeholder="Severity Level" style="width:150px"></label>
+                <label>Time In Minutes : <input type="number" autocomplete="off" placeholder="Time In Minutes" style="width:150px"></label>
+                <label>Auto Notify : &nbsp;&nbsp;Active : <input type="radio" value="ACTIVE" name="an">&nbsp;&nbsp;&nbsp; Disabled : <input type="radio" value="DISABLED" name="an" checked></label>
+                <label>Notify Time : <input type="number" autocomplete="off" placeholder="Notification Time" style="width:150px"></label>
+                <div id="rticket"></div>
+
+            </div>
+            <div class="modal_footer"><button class="sexy_btn">Cancel</button><button class="sexy_btn">Save</button></div>
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+
+</html>

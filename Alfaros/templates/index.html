@@ -1,0 +1,88 @@
+<!DOCTYPE html>{% load tags %}{% load static %}
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ugly.css' %}">
+    <script src="{% static 'Chart.js/dist/Chart.min.js' %}"></script>
+</head>
+
+<body>
+    <ul>
+        <li id="alfaros"><a href="#"><img src="{% static 'css/logo.png' %}" width="60" height="15"></a></li>
+        <li><a class="active" href="#">Dashboard</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Workflow</a></li>
+        <li id="logout"><a href="#">Log out</a></li>
+    </ul>
+
+
+    <div class="pager">
+        <a href="?page=1">&laquo;</a>
+        {%if page|add:"-25" >= 0 %}
+        <a href="?page={{page|add:'-25'}}">{{page|add:"-25"}}</a>
+
+        <div class="dropdown">
+            <a class="dropbtn">...</a>
+            <div class="dropdown-content">
+                {% for j in page|rang %}
+                <a href="?page={{j}}">{{j}}</a>
+                {%endfor%}
+            </div>
+        </div>
+
+        {%endif%}
+
+        {% for i in n %}
+        {%if page == i %}
+        <a class="active" href="?page={{i}}"><strong>{{i}}</strong></a>
+
+
+        {% elif i|absolu:page <= 4 %}
+        <a href="?page={{i}}">{{i}}</a>
+
+        {% endif %}
+        {% endfor %}
+        {%if page|add:"25" <= 100 %}
+        <div class="dropdown">
+            <a class="dropbtn">...</a>
+            <div class="dropdown-content">
+
+                {% for j in page|rang:"-5,-25" %}
+                <a href="?page={{j}}">{{j}}</a>
+                {%endfor%}
+            </div>
+        </div>
+
+        <a href="?page={{page|add:'25'}}">{{page|add:"25"}}</a>
+        {%endif%}
+        <a href="?page=29">&raquo;</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Threat Name</th>
+            <th>Severity</th>
+            <th>Start Date/Time</th>
+            <th>Attacker Ip</th>
+            <th>Target Ip</th>
+        </tr>
+
+        {% for row in alerts %}
+        <tr>
+            <td>{{row.id}}</td>
+            <td>{{row.threat}}</td>
+            <td>{{row.severity}}</td>
+            <td>{{row.date}}</td>
+            <td>{{row.attacker}}</td>
+            <td>{{row.target}}</td>
+        </tr>
+        {% endfor %}
+
+
+    </table>
+</body>
+
+</html>

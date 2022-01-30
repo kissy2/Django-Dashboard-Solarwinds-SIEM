@@ -1,0 +1,74 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>rtemp</title>
+    <style type="text/css">
+        * {
+            box-sizing: border-box
+        }
+
+        table {
+            width: 96%;
+            margin: 10% 2% 5% 2%;
+            border-collapse: collapse
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        thead {
+            border-top: 2px solid rgba(0, 0, 0, .6);
+            border-bottom: 2px solid rgba(0, 0, 0, .6);
+        }
+
+        tr {
+            border-bottom: 1px solid rgba(0, 0, 0, .5)
+        }
+
+        tr:nth-child(2n+2) {
+            background: rgba(0, 0, 0, .1);
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Rule ID</th>
+                <th>Rule Name</th>
+                <th>Detection Time</th>
+                <th>Severity</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Tool Alias</th>
+                <th>Incident Type</th>
+                <th>Manager</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in global %}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.rule_name}}</td>
+                <td>{{i.date}}</td>
+                <td>{{i.severity}}</td>
+                <td>{{i.source}}</td>
+                <td>{{i.destination}}</td>
+                <td>{{i.tool_alias}}</td>
+                <td>{{i.incident_type}}</td>
+                <td>{{i.manager}}</td>
+                <td>{{i.status}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>

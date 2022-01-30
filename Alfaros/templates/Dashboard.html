@@ -1,0 +1,301 @@
+< !DOCTYPE html> {
+    % load static %
+    }
+
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Dashboard</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}">
+        <script src="{% static 'Chart.js/dist/Chart.min.js' %}"></script>
+        <script src="{% static 'js/visual.js' %}"></script>
+    </head>
+
+    <body>
+        <ul>
+            <li id="alfaros"><a href="#"><img src="{% static 'css/logo.png' %}" width="60" height="15"></a></li>
+            <li><a class="active" href="{% url 'alfaros:dashboard' %}"><span id="Dashboard">Dashboard</span></a></li>
+            <li><a href="{% url 'alfaros:analytics' %}"><span id="Analytics">Analytics</span></a></li>
+            <li><a href="{% url 'alfaros:reports' %}"><span id="Reports">Reports</span></a></li>
+            <li><a href="{% url 'alfaros:workflow' %}"><span id="Workflow">Workflow</span></a></li>
+            <li id="logout"><a href="{% url 'alfaros:logout' %}">Log out</a></li>
+        </ul>
+        <div class="modal">
+            <div class="modal_child">
+                <article>
+                    <div class="modal_head">
+                        <h1>Ticket Management</h1><button class="close"><span>CLOSE</span></button>
+                    </div>
+                    <div class="modal_content"><label><span>Rule ID :</span><span id="id"></span></label><label><span>Rule Name :</span><span id="id_capitas"></span></label><label><span>Status :</span><select>
+                                <option selected value="In Progress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="False Positive">False Positive</option>
+                                <option value="Not Resolved">Not Resolved</option>
+                            </select></label><label><span>Description : </span><textarea></textarea></label>
+                        <div id="rticket"></div>
+                    </div>
+                    <div class="modal_footer"><button class="sexy_btn">Cancel</button><button class="sexy_btn">Save</button></div>
+                </article>
+            </div>
+        </div>
+        <div class="lecunt">
+            <div class="small_chart" style="position:relative"><select class="chart" title="Alerts Severity" vlad="severity">
+                    <option value="doughnut">Type</option>
+                    <option value="line">Line</option>
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="doughnut">Doughnut</option>
+                    <option value="radar">Radar</option>
+                </select><canvas id="severity"></canvas>
+                <p id="total_alerts"></p>
+            </div>
+            <div class="large_chart" style="position:relative"><select class="chart" title="Alerts Over Time" vlad="alert_overtime_chart">
+                    <option value="bar">Type</option>
+                    <option value="line">Line</option>
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="doughnut">Doughnut</option>
+                    <option value="radar">Radar</option>
+                </select><select title="Alerts Over Time" vlad="alert_overtime_chart" class="chart" style="right:25px">
+                    <option value="24">Time Range</option>
+                    <option value="24">24 Hours</option>
+                    <option value="7">Week</option>
+                    <option value="12">Month</option>
+                </select><canvas id="alert_overtime_chart"></canvas></div>
+        </div>
+        <div class="alert_container">
+            <div class="lecunt">
+                <div class="show">Show:&nbsp;
+                    <select>
+                        <option selected>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>&nbsp;
+
+                    per page
+                </div>
+                <div class="search"><input id="search" type="text" required autocomplete="off" /><label>Search Here...</label></div><input type="checkbox">
+            </div><span id="notification"><span class="tooltiptext">Click to reload</span></span><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th deval="rule_name">Alert Name<div><span class="order_up"></span><span class="order_down"></span></div>
+                        </th>
+                        <th deval="date">Detection Time<div><span class="order_up"></span><span class="active_order_down"></span></div>
+                        </th>
+                        <th deval="severity">Severity<div><span class="order_up"></span><span class="order_down"></span></div>
+                        </th>
+                        <th deval="source">Source IP<div><span class="order_up"></span><span class="order_down"></span></div>
+                        </th>
+                        <th deval="destination">Detection IP<div><span class="order_up"></span><span class="order_down"></span></div>
+                        </th>
+                        <th deval="manager">Manager<div><span class="order_up"></span><span class="order_down"></span></div>
+                        </th>
+                        <th deval="status">Status<div><span class="order_up"></span><span class="order_down"></span></div>
+                        </th>
+                        <th>Ticket</th>
+                    </tr>
+                </thead>
+                <tbody id="inner"> {
+                    % for i in alerts %
+                    }
+
+                    <tr id={ { i.id } }>
+                        <td> {
+                            {
+                            i.rule_name
+                            }
+                            }
+
+                        </td>
+                        <td> {
+                            {
+                            i.date
+                            }
+                            }
+
+                        </td>
+                        <td> {
+                            {
+                            i.severity
+                            }
+                            }
+
+                        </td>
+                        <td> {
+                            {
+                            i.source
+                            }
+                            }
+
+                        </td>
+                        <td> {
+                            {
+                            i.destination
+                            }
+                            }
+
+                        </td>
+                        <td> {
+                            {
+                            i.manager
+                            }
+                            }
+
+                        </td>
+                        <td> {
+                            {
+                            i.status
+                            }
+                            }
+
+                        </td>
+                        <td id={ { i.id } } class="pop_modal_box"><button class="pop pop_modal_box" , id={ { i.id } }></button></td>
+                    </tr> {
+                    % endfor %
+                    }
+
+                </tbody>
+            </table><br>
+            <div class="aligner">
+                <div class="showing" id="showing"></div>
+                <div id="pager" class="pager"></div>
+            </div>
+        </div>
+        <div class="alert_detail">
+            <div class="capitos"><span><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-1 3 20 20" width="20" height="20" style="enable-background:new -1 3 20 20;" xml:space="preserve">
+                        <style type="text/css">
+                            .st-double-caret-right0 {
+                                fill: none;
+                                stroke: #297994;
+                                stroke-width: 1.5;
+                                stroke-miterlimit: 10;
+                            }
+                        </style>
+                        <polyline class="st-double-caret-right0" points="8.9,17.5 13.4,13 8.9,8.5 "></polyline>
+                        <polyline class="st-double-caret-right0" points="4.9,17.5 9.4,13 4.9,8.5 "></polyline>
+                    </svg><span class="tooltiptext">Hide Panel</span></span><span><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" width="20" height="20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                        <style type="text/css">
+                            .st-details0 {
+                                fill: #FFFFFF;
+                                stroke: #767676;
+                                stroke-miterlimit: 10;
+                            }
+
+                            .st-details1 {
+                                fill: none;
+                                stroke: #297994;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                            }
+
+                            .st-details2 {
+                                fill: #FFFFFF;
+                            }
+
+                            .st-details3 {
+                                fill: none;
+                                stroke: #767676;
+                                stroke-miterlimit: 10;
+                            }
+                        </style>
+                        <polygon class="st-details0" points="1.5,19.5 1.5,0.5 12.5,0.5 16.5,4.5 16.5,19.5 "></polygon>
+                        <path class="st-details1" d="M7,8h7 M4,8h2 M4,11h2 M7,11h7 M4,14h2 M7,14h7"></path>
+                        <path class="st-details2" d="M18.3,16.2c0.5-0.8,0.7-1.7,0.7-2.7c0-3-2.5-5.5-5.5-5.5c-3,0-5.5,2.5-5.5,5.5s2.5,5.5,5.5,5.5
+c1,
+0,
+1.9-0.3,
+2.8-0.7L18,
+20h2v-2.1L18.3,
+16.2z"></path>
+                        <path class="st-details3" d="M17,5.5h-4.5V1 M16.3,16.3l3.2,3.2 M17.5,13.5c0,2.2-1.8,4-4,4s-4-1.8-4-4s1.8-4,4-4S17.5,11.3,17.5,13.5z"></path>
+                    </svg><span class="tooltiptext">Hide Alert Detail</span><span>DETAILS</span></span><span><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" width="20" height="20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                        <style type="text/css">
+                            .st-copy0 {
+                                fill: #FFFFFF;
+                                stroke: #767676;
+                                stroke-miterlimit: 10;
+                            }
+
+                            .st-copy1 {
+                                fill: #FFFFFF;
+                            }
+
+                            .st-copy2 {
+                                fill: none;
+                                stroke: #767676;
+                                stroke-miterlimit: 10;
+                            }
+
+                            .st-copy3 {
+                                fill: none;
+                                stroke: #297994;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                            }
+                        </style>
+                        <polygon class="st-copy0" points="13.5,3.5 5.5,3.5 5.5,19.5 17.5,19.5 17.5,7.5 "></polygon>
+                        <polygon class="st-copy1" points="16,18 1,18 1,0 7,0 7,4 16,4 "></polygon>
+                        <polygon class="st-copy0" points="10.5,0.5 2.5,0.5 2.5,16.5 14.5,16.5 14.5,4.5 "></polygon>
+                        <polyline class="st-copy2" points="14.5,4.5 10.5,4.5 10.5,0.5 "></polyline>
+                        <path class="st-copy3" d="M5,7h7 M5,13h7 M5,10h7"></path>
+                    </svg><span class="tooltiptext">Copy</span></span></div><br><br>
+            <hr><input class="alert_filter" type="text" autocomplete="false" placeholder="Type to filter detail data..." />
+            <div id="to_copy"></div>
+        </div>
+        <div class="pop_alert_detail"><span><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-1 3 20 20" width="20" height="20" style="enable-background:new -1 3 20 20;" xml:space="preserve">
+                    <style type="text/css">
+                        .st-double-caret-left0 {
+                            fill: none;
+                            stroke: #297994;
+                            stroke-width: 1.5;
+                            stroke-miterlimit: 10;
+                        }
+                    </style>
+                    <polyline class="st-double-caret-left0" points="9.4,8.5 4.9,13 9.4,17.5 "></polyline>
+                    <polyline class="st-double-caret-left0" points="13.4,8.5 8.9,13 13.4,17.5 "></polyline>
+                </svg><span class="tooltiptext">Show Panel</span></span><span><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" width="20" height="20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                    <style type="text/css">
+                        .st-details0 {
+                            fill: #FFFFFF;
+                            stroke: #767676;
+                            stroke-miterlimit: 10;
+                        }
+
+                        .st-details1 {
+                            fill: none;
+                            stroke: #297994;
+                            stroke-width: 2;
+                            stroke-miterlimit: 10;
+                        }
+
+                        .st-details2 {
+                            fill: #FFFFFF;
+                        }
+
+                        .st-details3 {
+                            fill: none;
+                            stroke: #767676;
+                            stroke-miterlimit: 10;
+                        }
+                    </style>
+                    <polygon class="st-details0" points="1.5,19.5 1.5,0.5 12.5,0.5 16.5,4.5 16.5,19.5 "></polygon>
+                    <path class="st-details1" d="M7,8h7 M4,8h2 M4,11h2 M7,11h7 M4,14h2 M7,14h7"></path>
+                    <path class="st-details2" d="M18.3,16.2c0.5-0.8,0.7-1.7,0.7-2.7c0-3-2.5-5.5-5.5-5.5c-3,0-5.5,2.5-5.5,5.5s2.5,5.5,5.5,5.5 c1,0,1.9-0.3,2.8-0.7L18,20h2v-2.1L18.3,16.2z"></path>
+                    <path class="st-details3" d="M17,5.5h-4.5V1 M16.3,16.3l3.2,3.2 M17.5,13.5c0,2.2-1.8,4-4,4s-4-1.8-4-4s1.8-4,4-4S17.5,11.3,17.5,13.5z"></path>
+                </svg><span class="tooltiptext">Show Alert Detail</span></span></div>
+        <div class="ring_ring"><button></button><span></span></div>
+        <div class="nmodal">
+            <div class="nmodal_child">
+                <div class="modal_head">
+                    <h1 style="text-align:center">Ticket Time Warning</h1>
+                </div>
+                <div style="height:40vh;overflow-y:auto;line-height:1.6" class="modal_content"></div>
+                <div class="modal_footer"><button class="forced">I Understand</button></div>
+            </div>
+        </div>
+    </body>
+
+    </html>

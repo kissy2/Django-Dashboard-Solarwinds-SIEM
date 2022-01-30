@@ -1,0 +1,24 @@
+<!DOCTYPE html>{% load static %}
+<head>
+  <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Login.css' %}">
+</head>
+<body>
+ <div class="form">
+             <h1>Alfaros</h1>
+          <form action="http://127.0.0.1:8000/login/" method="POST">{% csrf_token %}
+            <div class="field-wrap">
+            <input type="text" name="username" required autocomplete="off"/><label>Login</label>
+          </div>
+          <div class="field-wrap">
+         <input type="password" name="password" required autocomplete="off"/><label>Password</label>
+          </div>
+          <p id="forgot"><a href="http://alfaros.tn/#contact">Forgot Password?</a></p>
+              <p> {{error}}  </p>
+          <input type="submit" value="Login">
+          </form>
+        </div>
+
+</body>
+
+</html>
