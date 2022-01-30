@@ -1,6 +1,7 @@
 # Django-Dashboard-Solarwinds-SIEM
 
-This web application contains :
+This web application is meant to extend some of the functionality of the SolarWinds Siem solution using its API and has the following capabilities :
+
 - A dashboard that display of alerts in real time.
 - A report generation management interface.
 - An advanced search interface for the entire database.
